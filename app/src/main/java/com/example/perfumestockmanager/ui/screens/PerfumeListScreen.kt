@@ -31,8 +31,9 @@ fun PerfumeListScreen(
 
     onAddClick: () -> Unit, //кнопка клика по add perfume
 
-    onHistoryClick: () -> Unit //кнопка клика по истории (функции ничего не принимают и не отдают)
+    onHistoryClick: () -> Unit, //кнопка клика по истории (функции ничего не принимают и не отдают)
 
+    onMarketClick: () -> Unit
 ) {
 
     Column( //тут ниже все понятно
@@ -74,6 +75,11 @@ fun PerfumeListScreen(
             ) {
 
                 Text("History")
+            }
+            Button(
+                onClick = onMarketClick
+            ) {
+                Text("Market")
             }
         }
 

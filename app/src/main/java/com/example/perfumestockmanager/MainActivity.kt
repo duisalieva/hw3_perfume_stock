@@ -27,6 +27,7 @@ import com.example.perfumestockmanager.ui.screens.HistoryScreen
 import com.example.perfumestockmanager.ui.screens.PerfumeDetailScreen
 import com.example.perfumestockmanager.ui.screens.PerfumeListScreen
 import com.example.perfumestockmanager.ui.theme.PerfumeStockManagerTheme
+import com.example.perfumestockmanager.ui.screens.MarketScreen
 
 class MainActivity : ComponentActivity() {
 
@@ -170,6 +171,12 @@ class MainActivity : ComponentActivity() {
                                         .navigate(
                                             "history"
                                         )
+                                },
+
+                                onMarketClick = {
+
+                                    navController
+                                        .navigate("market")
                                 }
                             )
                         }
@@ -385,6 +392,42 @@ class MainActivity : ComponentActivity() {
 
                                 onBack = {
 
+                                    navController
+                                        .popBackStack()
+                                }
+                            )
+                        }
+                        composable(
+                            route = "market"
+                        ) {
+                            LaunchedEffect(Unit) {
+
+                                if (
+                                    uiState.marketPerfumes
+                                        .isEmpty()
+                                ) {
+
+                                    viewModel
+                                        .loadMarketPerfumes()
+                                }
+                            }
+
+                            MarketScreen(
+                                perfumes =
+                                    uiState.marketPerfumes,
+
+                                isLoading =
+                                    uiState.isMarketLoading,
+
+                                errorMessage =
+                                    uiState.marketError,
+
+                                onRetry = {
+                                    viewModel
+                                        .loadMarketPerfumes()
+                                },
+
+                                onBack = {
                                     navController
                                         .popBackStack()
                                 }

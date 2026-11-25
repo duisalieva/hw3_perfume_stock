@@ -8,15 +8,15 @@ import com.example.perfumestockmanager.data.local.PerfumeEntity
 import com.example.perfumestockmanager.data.local.TransactionDao
 import kotlinx.coroutines.flow.Flow
 
+import com.example.perfumestockmanager.data.remote.MarketApiService
+import com.example.perfumestockmanager.data.remote.MarketProductDto
+
 class PerfumeRepository(
-
     private val database: PerfumeDatabase,
-
     private val perfumeDao: PerfumeDao,
-
-    private val transactionDao: TransactionDao
-
-) {
+    private val transactionDao: TransactionDao,
+    private val apiService: MarketApiService
+){
 
     val allPerfumes: Flow<List<PerfumeEntity>> =
         perfumeDao.observeAllPerfumes()
@@ -88,5 +88,12 @@ class PerfumeRepository(
                 transaction
             )
         }
+    }
+    suspend fun getMarketPerfumes():
+            List<MarketProductDto> {
+
+        return apiService
+            .getFragrances()
+            .products
     }
 }

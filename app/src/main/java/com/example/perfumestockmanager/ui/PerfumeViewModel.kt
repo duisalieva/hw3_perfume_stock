@@ -269,4 +269,56 @@ class PerfumeViewModel(
             )
         }
     }
+
+    fun loadMarketPerfumes() {
+
+        viewModelScope.launch {
+
+            _uiState.update {
+                    currentState ->
+
+                currentState.copy(
+                    isMarketLoading = true,
+                    marketError = null
+                )
+            }
+
+            try {
+
+                val marketPerfumes =
+                    repository
+                        .getMarketPerfumes()
+
+                _uiState.update {
+                        currentState ->
+
+                    currentState.copy(
+                        marketPerfumes =
+                            marketPerfumes,
+
+                        isMarketLoading =
+                            false,
+
+                        marketError =
+                            null
+                    )
+                }
+
+            } catch (exception: Exception) {
+
+                _uiState.update {
+                        currentState ->
+
+                    currentState.copy(
+                        isMarketLoading =
+                            false,
+
+                        marketError =
+                            exception.message
+                                ?: "Failed to load market"
+                    )
+                }
+            }
+        }
+    }
 }
